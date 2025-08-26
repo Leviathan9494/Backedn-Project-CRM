@@ -1,0 +1,41 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "Red Mug",
+      "description": "Ceramic red coffee mug",
+      "price": 7.99
+    },
+    {
+      "id": 2,
+      "name": "Blue T-Shirt",
+      "description": "100% cotton, size M",
+      "price": 12.5
+    },
+    {
+      "id": 3,
+      "name": "Notebook",
+      "description": "A5 lined notebook",
+      "price": 4.25
+    },
+    {
+      "id": 4,
+      "name": "White Audi",
+      "description": "2016 Audi A7 3.0T",
+      "price": 50000
+    },
+    {
+      "id": 5,
+      "name": "White Pick up Truck",
+      "description": "2011 F-150 Hennessey 6.2L ",
+      "price": 90000
+    },
+    {
+      "id": 20,
+      "name": "string",
+      "description": "string",
+      "price": 0
+    }
+  ],
+  "nextId": 22
+}

@@ -1,0 +1,44 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Deno Product API",
+    "version": "1.0.0"
+  },
+  "servers": [{ "url": "/" }],
+  "paths": {
+    "/products": {
+      "get": {
+        "summary": "List products",
+        "parameters": [{ "name": "q", "in": "query", "schema": { "type": "string" }, "description": "search query" }],
+        "responses": { "200": { "description": "OK" } }
+      },
+      "post": {
+        "summary": "Create product",
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Product" } } } },
+        "responses": { "201": { "description": "Created" } }
+      }
+    },
+    "/products/{id}": {
+      "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
+      "get": { "summary": "Get product", "responses": { "200": { "description": "OK" }, "404": { "description": "Not found" } } },
+      "put": { "summary": "Update product", "requestBody": { "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Product" } } } }, "responses": { "200": { "description": "OK" } } },
+      "delete": { "summary": "Delete product", "responses": { "204": { "description": "No Content" }, "404": { "description": "Not found" } } }
+    },
+    "/products/batch": {
+      "patch": { "summary": "Batch update products", "requestBody": { "content": { "application/json": { "schema": { "type": "object", "properties": { "ids": { "type": "array", "items": { "type": "integer" } }, "update": { "$ref": "#/components/schemas/Product" } } } } } }, "responses": { "200": { "description": "OK" } } }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Product": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "name": { "type": "string" },
+          "description": { "type": "string" },
+          "price": { "type": "number" }
+        }
+      }
+    }
+  }
+}

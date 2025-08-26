@@ -1,0 +1,21 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Swagger UI - Deno Product API</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swagger-ui-dist@4.18.2/swagger-ui.css">
+    <style>body { margin:0; }</style>
+  </head>
+  <body>
+    <div id="swagger"></div>
+    <script src="https://cdn.jsdelivr.net/npm/swagger-ui-dist@4.18.2/swagger-ui-bundle.js"></script>
+    <script>
+      window.onload = () => {
+        SwaggerUIBundle({
+          url: '/openapi.json',
+          dom_id: '#swagger'
+        });
+      };
+    </script>
+  </body>
+</html>
