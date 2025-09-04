@@ -1,5 +1,19 @@
 :root{ --bg:#f6f8fa; --panel:#fff; --accent:#4b6bff; --accent-2:#8a4bff; --muted:#6b7280; --text:#0f1724; --text-strong:#071130; --accent-contrast:#ffffff; --table-head:#eef2ff }
+:root{ --control-h:44px }
 body{ font-family: system-ui, sans-serif; background:var(--bg); margin:0; padding:20px; color:var(--text) }
+
+/* Dark theme overrides (applied when documentElement data-theme="dark") */
+[data-theme="dark"]{
+	--bg: #0b1020;
+	--panel: #0f1724;
+	--accent: #6f8bff;
+	--accent-2: #a07bff;
+	--muted: #93a0b3;
+	--text: #e6eef9;
+	--text-strong: #ffffff;
+	--accent-contrast: #06102a;
+	--table-head: rgba(111,139,255,0.06);
+}
 .container{ max-width:1100px; margin:0 auto }
 .app-header{ display:flex; align-items:center; gap:12px; margin-bottom:12px }
 .logo{ width:44px; height:44px; object-fit:cover; border-radius:6px }
@@ -13,8 +27,37 @@ body{ font-family: system-ui, sans-serif; background:var(--bg); margin:0; paddin
 .nav-label{ margin-left:4px }
 .header-right{ margin-left:auto; display:flex; align-items:center; gap:12px }
 .color-ref{ width:48px; height:48px; object-fit:cover; border-radius:6px }
-.topbar{ margin-bottom:12px }
+.topbar{ margin-bottom:12px; display:flex; gap:8px; align-items:center }
 .layout{ display:flex; gap:20px }
+
+/* Topbar search input should visually match buttons */
+.topbar input{
+	padding:8px 12px;
+	border-radius:10px;
+	border:1px solid rgba(14,22,40,0.06);
+	background:var(--panel);
+	box-shadow: 0 6px 16px rgba(11,20,60,0.04);
+	font-weight:600;
+	color:var(--text);
+	min-width:120px;
+	max-width:720px;
+	flex:1 1 auto;
+	height:var(--control-h);
+	margin-right:8px;
+	transition: box-shadow 180ms ease, transform 160ms ease, border-color 160ms ease;
+	display:inline-flex; align-items:center;
+}
+.topbar input::placeholder{ color:var(--muted); font-weight:500 }
+.topbar input:focus{ outline:3px solid rgba(75,107,255,0.08); outline-offset:3px; box-shadow:0 12px 36px rgba(75,107,255,0.06) }
+
+/* Ensure topbar buttons match control height */
+.topbar button, .btn{ height:var(--control-h); display:inline-flex; align-items:center }
+
+@media (max-width:520px){
+	.topbar{ flex-direction:column; align-items:stretch }
+	.topbar input{ width:100%; margin-right:0 }
+	.topbar button{ width:100%; justify-content:center }
+}
 .left{ width:320px; background:var(--panel); padding:16px; border-radius:6px }
 .right{ flex:1; background:var(--panel); padding:16px; border-radius:6px }
 .form label{ display:block; font-size:13px; margin-top:8px; color:var(--text-strong) }

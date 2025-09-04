@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { getProducts, createProduct, updateProduct, deleteProduct } from './api'
 import ProductForm from './components/ProductForm'
 import ProductList from './components/ProductList'
@@ -18,6 +18,7 @@ export default function App() {
   const [error, setError] = useState(null)
   const [tab, setTab] = useState('products')
   const [animKey, setAnimKey] = useState(0)
+  const [theme, setTheme] = useState(() => typeof window !== 'undefined' ? (localStorage.getItem('theme') || 'light') : 'light')
 
   async function load(q) {
     setLoading(true)
@@ -32,10 +33,37 @@ export default function App() {
   // initial load
   useEffect(() => { load() }, [])
 
+  // live search: debounce user typing
+  const firstSearchRef = useRef(true)
+  useEffect(() => {
+    // skip the initial run (we already loaded once on mount)
+    if (firstSearchRef.current) {
+      firstSearchRef.current = false
+      return
+    }
+
+    const t = setTimeout(() => {
+      setQuery(searchTerm)
+      load(searchTerm)
+    }, 300)
+
+    return () => clearTimeout(t)
+  }, [searchTerm])
+
   // trigger small animation when tab changes
   useEffect(() => {
     setAnimKey(k => k + 1)
   }, [tab])
+
+  // apply theme to document and persist
+  useEffect(() => {
+    try {
+      document.documentElement.setAttribute('data-theme', theme)
+      localStorage.setItem('theme', theme)
+    } catch (e) {
+      // ignore server env
+    }
+  }, [theme])
 
   async function handleCreate(payload) {
     try {
@@ -101,6 +129,13 @@ export default function App() {
         </nav>
         <div className="header-right">
           <p>Backend: <a href={`${API_URL}/swagger`} target="_blank">Swagger UI</a></p>
+          <button className="btn" title="Toggle theme" onClick={() => setTheme(t => t === 'light' ? 'dark' : 'light')}>
+            {theme === 'light' ? (
+              <svg className="icon" viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M6.76 4.84l-1.8-1.79L3.17 4.84l1.79 1.79 1.8-1.79zM1 13h3v-2H1v2zm10 9h2v-3h-2v3zM20.24 4.84l1.79-1.79-1.79-1.79-1.8 1.79 1.8 1.79zM17 13a5 5 0 1 1-10 0 5 5 0 0 1 10 0z"/></svg>
+            ) : (
+              <svg className="icon" viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            )}
+          </button>
           <img src={colorRef} alt="color ref" className="color-ref" />
         </div>
       </header>
