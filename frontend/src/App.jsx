@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { getProducts, createProduct, updateProduct, deleteProduct } from './api'
 import ProductForm from './components/ProductForm'
 import ProductList from './components/ProductList'
+import headerImg from '../Generated image 1.png'
 
 const API_URL = 'http://localhost:8000'
 
@@ -10,6 +11,7 @@ export default function App() {
   const [loading, setLoading] = useState(false)
   const [editing, setEditing] = useState(null)
   const [query, setQuery] = useState('')
+  const [error, setError] = useState(null)
 
   async function load() {
     setLoading(true)
@@ -24,25 +26,55 @@ export default function App() {
   useEffect(() => { load() }, [query])
 
   async function handleCreate(payload) {
-    const created = await createProduct(payload)
-    setProducts((s) => [created, ...s])
+    try {
+      setError(null)
+      const created = await createProduct(payload)
+      // reload list to ensure consistent source of truth
+      await load()
+      return created
+    } catch (err) {
+      console.error('create failed', err)
+      setError(err.message || String(err))
+      return null
+    }
   }
 
   async function handleUpdate(id, payload) {
-    const updated = await updateProduct(id, payload)
-    setProducts((s) => s.map(p => p.id === id ? updated : p))
-    setEditing(null)
+    try {
+      setError(null)
+      const updated = await updateProduct(id, payload)
+      await load()
+      setEditing(null)
+      return updated
+    } catch (err) {
+      console.error('update failed', err)
+      setError(err.message || String(err))
+      return null
+    }
   }
 
   async function handleDelete(id) {
-    const ok = await deleteProduct(id)
-    if (ok) setProducts((s) => s.filter(p => p.id !== id))
+    try {
+      setError(null)
+      const ok = await deleteProduct(id)
+      if (ok) await load()
+      return ok
+    } catch (err) {
+      console.error('delete failed', err)
+      setError(err.message || String(err))
+      return false
+    }
   }
 
   return (
     <div className="container">
-      <h1>PRM — Product Management</h1>
-      <p>Backend: <a href={`${API_URL}/swagger`} target="_blank">Swagger UI</a></p>
+      <header className="app-header">
+        <img src={headerImg} alt="PRM graphic" className="header-image" />
+        <div>
+          <h1>PRM — Product Management</h1>
+          <p>Backend: <a href={`${API_URL}/swagger`} target="_blank">Swagger UI</a></p>
+        </div>
+      </header>
 
       <div className="topbar">
         <input placeholder="Search products" value={query} onChange={e => setQuery(e.target.value)} />
@@ -55,6 +87,7 @@ export default function App() {
         </div>
         <div className="right">
           <h2>Products</h2>
+          {error && <div className="error">Error: {error}</div>}
           {loading ? <p>Loading...</p> : (
             <ProductList products={products} onEdit={setEditing} onDelete={handleDelete} />
           )}

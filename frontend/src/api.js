@@ -1,11 +1,24 @@
 const API = 'http://localhost:8000'
 
 export async function getProducts(q) {
+  // If q is a numeric id, call the single-item endpoint
+  if (q && /^\d+$/.test(String(q).trim())) {
+    const id = Number(q.trim())
+    const res = await fetch(`${API}/products/${id}`)
+    if (res.status === 404) return []
+    if (!res.ok) throw new Error('Failed to fetch product')
+    const single = await res.json()
+    return Array.isArray(single) ? single : [single]
+  }
+
   const url = new URL(API + '/products')
   if (q) url.searchParams.set('q', q)
   const res = await fetch(url.toString())
   if (!res.ok) throw new Error('Failed to fetch products')
-  return res.json()
+  const body = await res.json()
+  // backend sometimes returns { value: [...] } from lowdb wrapper
+  if (body && typeof body === 'object' && Array.isArray(body.value)) return body.value
+  return body
 }
 
 export async function getProduct(id) {
@@ -15,15 +28,21 @@ export async function getProduct(id) {
 }
 
 export async function createProduct(payload) {
+  console.log('API create', payload)
   const res = await fetch(`${API}/products`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(payload) })
+  const body = await res.json().catch(() => null)
+  console.log('API create response', res.status, body)
   if (!res.ok) throw new Error('Failed to create')
-  return res.json()
+  return body
 }
 
 export async function updateProduct(id, payload) {
+  console.log('API update', id, payload)
   const res = await fetch(`${API}/products/${id}`, { method: 'PUT', headers: { 'content-type': 'application/json' }, body: JSON.stringify(payload) })
+  const body = await res.json().catch(() => null)
+  console.log('API update response', res.status, body)
   if (!res.ok) throw new Error('Failed to update')
-  return res.json()
+  return body
 }
 
 export async function deleteProduct(id) {
