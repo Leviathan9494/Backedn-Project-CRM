@@ -32,10 +32,16 @@
     },
     {
       "id": 20,
-      "name": "string",
-      "description": "string",
-      "price": 0
+      "name": "New Test",
+      "description": "Front end works",
+      "price": 1
+    },
+    {
+      "id": 23,
+      "name": "New product test",
+      "description": "Front end input",
+      "price": 20
     }
   ],
-  "nextId": 22
+  "nextId": 24
 }
