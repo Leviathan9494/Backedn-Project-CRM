@@ -6,8 +6,9 @@ body{ font-family: system-ui, sans-serif; background:var(--bg); margin:0; paddin
 .logo-wrap{ display:flex; align-items:center; gap:8px }
 .brand{ font-weight:700; font-size:20px }
 .top-nav{ margin-left:20px }
-.top-nav button{ background:none; border:0; padding:8px 12px; cursor:pointer }
-.top-nav button.active{ background:var(--accent); color:white; border-radius:6px }
+.top-nav button{ background:none; border:0; padding:8px 12px; cursor:pointer; border-radius:8px }
+.top-nav button:hover{ background:rgba(0,0,0,0.04) }
+.top-nav button.active{ background:var(--accent); color:white; border-radius:10px; box-shadow:0 6px 18px rgba(43,122,120,0.12) }
 .header-right{ margin-left:auto; display:flex; align-items:center; gap:12px }
 .color-ref{ width:48px; height:48px; object-fit:cover; border-radius:6px }
 .topbar{ margin-bottom:12px }
@@ -23,6 +24,9 @@ body{ font-family: system-ui, sans-serif; background:var(--bg); margin:0; paddin
 .modal-inner{ background:var(--panel); padding:20px; border-radius:6px; min-width:360px }
 .cards{ display:flex; gap:12px }
 .card{ background:var(--panel); padding:12px; border-radius:8px; box-shadow:0 1px 4px rgba(0,0,0,0.06); min-width:160px }
+.btn{ padding:6px 10px; border-radius:8px; border:0; cursor:pointer; margin-right:6px }
+.btn-edit{ background:#ffd966; color:#333 }
+.btn-delete{ background:#ff6b6b; color:white }
 .card-title{ font-size:13px; color:var(--muted) }
 .card-value{ font-size:18px; font-weight:700; margin-top:6px }
 .page{ background:var(--panel); padding:16px; border-radius:8px }

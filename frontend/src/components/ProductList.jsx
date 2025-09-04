@@ -14,8 +14,8 @@ export default function ProductList({ products = [], onEdit, onDelete }) {
             <td>{p.description}</td>
             <td>{p.price}</td>
             <td>
-              <button onClick={() => onEdit && onEdit(p)}>Edit</button>
-              <button onClick={() => onDelete && onDelete(p.id)}>Delete</button>
+              <button className="btn btn-edit" title="Edit" onClick={() => onEdit && onEdit(p)}>Edit</button>
+              <button className="btn btn-delete" title="Delete" onClick={() => onDelete && onDelete(p.id)}>Delete</button>
             </td>
           </tr>
         ))}
