@@ -11,19 +11,21 @@ export default function App() {
   const [loading, setLoading] = useState(false)
   const [editing, setEditing] = useState(null)
   const [query, setQuery] = useState('')
+  const [searchTerm, setSearchTerm] = useState('')
   const [error, setError] = useState(null)
 
-  async function load() {
+  async function load(q) {
     setLoading(true)
     try {
-      const res = await getProducts(query)
-      setProducts(res)
+      const res = await getProducts(typeof q === 'undefined' ? query : q)
+      setProducts(res || [])
     } finally {
       setLoading(false)
     }
   }
 
-  useEffect(() => { load() }, [query])
+  // initial load
+  useEffect(() => { load() }, [])
 
   async function handleCreate(payload) {
     try {
@@ -77,7 +79,10 @@ export default function App() {
       </header>
 
       <div className="topbar">
-        <input placeholder="Search products" value={query} onChange={e => setQuery(e.target.value)} />
+        <input placeholder="Search products" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} />
+        <button onClick={() => { setQuery(searchTerm); load(searchTerm) }}>Search</button>
+        <button onClick={() => { setSearchTerm(''); setQuery(''); load('') }}>Clear</button>
+        <button onClick={() => load()}>Refresh</button>
       </div>
 
       <div className="layout">
@@ -89,7 +94,11 @@ export default function App() {
           <h2>Products</h2>
           {error && <div className="error">Error: {error}</div>}
           {loading ? <p>Loading...</p> : (
-            <ProductList products={products} onEdit={setEditing} onDelete={handleDelete} />
+            products && products.length > 0 ? (
+              <ProductList products={products} onEdit={setEditing} onDelete={handleDelete} />
+            ) : (
+              <div className="empty">No products found. Try creating one or refresh.</div>
+            )
           )}
         </div>
       </div>
