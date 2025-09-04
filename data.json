@@ -4,7 +4,7 @@
       "id": 1,
       "name": "Red Mug",
       "description": "Ceramic red coffee mug",
-      "price": 7.99
+      "price": 8.99
     },
     {
       "id": 2,
@@ -40,8 +40,14 @@
       "id": 23,
       "name": "New product test",
       "description": "Front end input",
-      "price": 20
+      "price": 20.7
+    },
+    {
+      "id": 24,
+      "name": "Black BMW",
+      "description": "BMW 550d",
+      "price": 35250
     }
   ],
-  "nextId": 24
+  "nextId": 25
 }

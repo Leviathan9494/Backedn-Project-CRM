@@ -1,33 +1,87 @@
-:root{ --bg:#f6f8fa; --panel:#fff; --accent:#2b7a78; --muted:#6b7280 }
-body{ font-family: system-ui, sans-serif; background:var(--bg); margin:0; padding:20px }
+:root{ --bg:#f6f8fa; --panel:#fff; --accent:#4b6bff; --accent-2:#8a4bff; --muted:#6b7280; --text:#0f1724; --text-strong:#071130; --accent-contrast:#ffffff; --table-head:#eef2ff }
+body{ font-family: system-ui, sans-serif; background:var(--bg); margin:0; padding:20px; color:var(--text) }
 .container{ max-width:1100px; margin:0 auto }
 .app-header{ display:flex; align-items:center; gap:12px; margin-bottom:12px }
 .logo{ width:44px; height:44px; object-fit:cover; border-radius:6px }
 .logo-wrap{ display:flex; align-items:center; gap:8px }
-.brand{ font-weight:700; font-size:20px }
+.brand{ font-weight:700; font-size:20px; color:var(--accent-2) }
 .top-nav{ margin-left:20px }
-.top-nav button{ background:none; border:0; padding:8px 12px; cursor:pointer; border-radius:8px }
-.top-nav button:hover{ background:rgba(0,0,0,0.04) }
-.top-nav button.active{ background:var(--accent); color:white; border-radius:10px; box-shadow:0 6px 18px rgba(43,122,120,0.12) }
+.top-nav button{ background:none; border:0; padding:8px 12px; cursor:pointer; border-radius:12px; display:inline-flex; gap:8px; align-items:center }
+.top-nav button:hover{ background:linear-gradient(90deg, rgba(75,107,255,0.08), rgba(138,75,255,0.06)) }
+.top-nav button.active{ background:linear-gradient(90deg,var(--accent),var(--accent-2)); color:white; border-radius:12px; box-shadow:0 8px 30px rgba(75,107,255,0.14) }
+.nav-icon{ opacity:0.9 }
+.nav-label{ margin-left:4px }
 .header-right{ margin-left:auto; display:flex; align-items:center; gap:12px }
 .color-ref{ width:48px; height:48px; object-fit:cover; border-radius:6px }
 .topbar{ margin-bottom:12px }
 .layout{ display:flex; gap:20px }
 .left{ width:320px; background:var(--panel); padding:16px; border-radius:6px }
 .right{ flex:1; background:var(--panel); padding:16px; border-radius:6px }
-.form label{ display:block; font-size:13px; margin-top:8px }
-.form input{ width:100%; padding:8px; margin-top:4px; box-sizing:border-box }
+.form label{ display:block; font-size:13px; margin-top:8px; color:var(--text-strong) }
+.form input{ width:100%; padding:8px; margin-top:4px; box-sizing:border-box; border:1px solid #e6e9f2; border-radius:6px }
 .form-actions{ margin-top:12px }
-.products{ width:100%; border-collapse:collapse }
-.products th, .products td{ padding:8px; border-bottom:1px solid #eee }
+.products{ width:100%; border-collapse:collapse; font-size:14px }
+.products th, .products td{ padding:10px 12px; border-bottom:1px solid #f1f3fb }
+.products th{ background:linear-gradient(90deg, rgba(75,107,255,0.06), rgba(138,75,255,0.04)); color:var(--text-strong); text-align:left }
+.products th strong, .products th b{ color:var(--text-strong) }
+.products td{ color:var(--text) }
+.products tr:hover td{ background:linear-gradient(90deg, rgba(75,107,255,0.02), rgba(138,75,255,0.01)) }
 .modal{ position:fixed; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.4) }
 .modal-inner{ background:var(--panel); padding:20px; border-radius:6px; min-width:360px }
 .cards{ display:flex; gap:12px }
-.card{ background:var(--panel); padding:12px; border-radius:8px; box-shadow:0 1px 4px rgba(0,0,0,0.06); min-width:160px }
-.btn{ padding:6px 10px; border-radius:8px; border:0; cursor:pointer; margin-right:6px }
-.btn-edit{ background:#ffd966; color:#333 }
-.btn-delete{ background:#ff6b6b; color:white }
+.card{ background:var(--panel); padding:12px; border-radius:8px; box-shadow:0 2px 8px rgba(11,20,60,0.04); min-width:160px }
+.btn{ padding:8px 12px; border-radius:10px; border:0; cursor:pointer; margin-right:6px; display:inline-flex; gap:8px; align-items:center; font-weight:600 }
+.btn .icon{ display:inline-block; width:16px; height:16px }
+.btn-edit{ background:linear-gradient(90deg,#ffd966,#ffb84d); color:#2b2b2b; box-shadow:0 6px 18px rgba(255,184,77,0.12) }
+.btn-delete{ background:linear-gradient(90deg,#ff6b6b,#ff3b3b); color:white; box-shadow:0 6px 18px rgba(255,59,59,0.12) }
+.vis{ position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden }
+.btn:hover{ transform:translateY(-1px); box-shadow:0 12px 30px rgba(75,107,255,0.08) }
+.btn:active{ transform:translateY(0) }
+.btn, .top-nav button, .topbar button { transition: transform 160ms cubic-bezier(.2,.9,.3,1), box-shadow 220ms ease, background 220ms ease, color 160ms ease }
+.btn:active, .top-nav button:active, .topbar button:active { transform: translateY(0) scale(0.99) }
+.btn:focus, .top-nav button:focus, .topbar button:focus { outline:3px solid rgba(75,107,255,0.12); outline-offset:3px }
 .card-title{ font-size:13px; color:var(--muted) }
-.card-value{ font-size:18px; font-weight:700; margin-top:6px }
+.card-value{ font-size:18px; font-weight:700; margin-top:6px; color:var(--text-strong) }
 .page{ background:var(--panel); padding:16px; border-radius:8px }
 .empty{ color:var(--muted); padding:12px }
+
+/* Links & headings */
+h1,h2,h3{ color:var(--text-strong); margin:8px 0 }
+a{ color:var(--accent); text-decoration:none }
+a:hover{ color:var(--accent-2); text-decoration:underline }
+
+/* Table utilities */
+.products thead th{ color:var(--text-strong); font-weight:700 }
+.products tbody td .muted{ color:var(--muted); font-size:13px }
+
+/* Small helpers for buttons that use the accent */
+.btn-primary{ background:linear-gradient(90deg,var(--accent),var(--accent-2)); color:var(--accent-contrast); box-shadow:0 10px 30px rgba(75,107,255,0.12) }
+.btn-primary:hover{ box-shadow:0 18px 40px rgba(75,107,255,0.16) }
+
+/* Page / layout enter animations */
+@keyframes fadeInUp { from { opacity:0; transform:translateY(8px) } to { opacity:1; transform:translateY(0) } }
+@keyframes slideIn { from { opacity:0; transform:translateX(8px) } to { opacity:1; transform:translateX(0) } }
+
+.page.enter, .layout.enter, .modal-inner.enter { animation: fadeInUp 320ms cubic-bezier(.2,.9,.25,1) both }
+.top-nav button.enter { animation: slideIn 260ms ease both }
+
+/* Modal open animation */
+.modal-inner { transform-origin:center; }
+.modal-inner.enter { animation: fadeInUp 260ms cubic-bezier(.2,.9,.25,1) both }
+
+/* subtle row highlight when selecting */
+.products tr.selected td{ background: linear-gradient(90deg, rgba(75,107,255,0.06), rgba(138,75,255,0.04)); }
+
+/* Responsive tweaks */
+@media (max-width:880px){ .layout{ flex-direction:column } .left{ width:100% } }
+
+/* Row micro-interactions */
+.products tbody tr{ transition: background 220ms ease, transform 180ms cubic-bezier(.2,.9,.25,1) }
+.products tbody tr:hover{ transform: translateY(-2px) }
+.products td button{ transition: transform 140ms ease, box-shadow 160ms ease }
+.products td button:hover{ transform: translateY(-2px) scale(1.02) }
+.products td button:active{ transform: translateY(0) scale(0.99) }
+.products tbody tr:focus{ outline: 3px solid rgba(75,107,255,0.08); outline-offset:4px }
+
+/* Action buttons inside table get compact radius */
+.products td .btn{ padding:6px 8px; border-radius:8px }

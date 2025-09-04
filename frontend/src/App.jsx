@@ -4,8 +4,8 @@ import ProductForm from './components/ProductForm'
 import ProductList from './components/ProductList'
 import Dashboard from './components/Dashboard'
 import Settings from './components/Settings'
-import headerImg from '../Generated image 1.png'
-import colorRef from '../Generated image 1.png'
+import headerImg from './components/Generated image 1.png'
+import colorRef from './components/Generated image 1.png'
 
 const API_URL = 'http://localhost:8000'
 
@@ -17,6 +17,7 @@ export default function App() {
   const [searchTerm, setSearchTerm] = useState('')
   const [error, setError] = useState(null)
   const [tab, setTab] = useState('products')
+  const [animKey, setAnimKey] = useState(0)
 
   async function load(q) {
     setLoading(true)
@@ -30,6 +31,11 @@ export default function App() {
 
   // initial load
   useEffect(() => { load() }, [])
+
+  // trigger small animation when tab changes
+  useEffect(() => {
+    setAnimKey(k => k + 1)
+  }, [tab])
 
   async function handleCreate(payload) {
     try {
@@ -80,9 +86,18 @@ export default function App() {
           <div className="brand">PRM</div>
         </div>
         <nav className="top-nav">
-          <button className={tab === 'dashboard' ? 'active' : ''} onClick={() => setTab('dashboard')}>Dashboard</button>
-          <button className={tab === 'products' ? 'active' : ''} onClick={() => setTab('products')}>Products</button>
-          <button className={tab === 'settings' ? 'active' : ''} onClick={() => setTab('settings')}>Settings</button>
+          <button className={tab === 'dashboard' ? 'active' : ''} onClick={() => setTab('dashboard')} title="Dashboard">
+            <svg className="nav-icon" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M3 13h8V3H3v10zm0 8h8v-6H3v6zM13 21h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
+            <span className="nav-label">Dashboard</span>
+          </button>
+          <button className={tab === 'products' ? 'active' : ''} onClick={() => setTab('products')} title="Products">
+            <svg className="nav-icon" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M12 2L2 7l10 5 10-5-10-5zm0 7.3L4.2 7 12 4.7 19.8 7 12 9.3zM2 17l10 5 10-5V9l-10 5L2 9v8z"/></svg>
+            <span className="nav-label">Products</span>
+          </button>
+          <button className={tab === 'settings' ? 'active' : ''} onClick={() => setTab('settings')} title="Settings">
+            <svg className="nav-icon" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M19.14 12.936a7.952 7.952 0 0 0 0-1.872l2.036-1.58a.5.5 0 0 0 .12-.64l-1.928-3.34a.5.5 0 0 0-.585-.22l-2.4.96a8.06 8.06 0 0 0-1.62-.94l-.36-2.52A.5.5 0 0 0 14 1h-4a.5.5 0 0 0-.497.424l-.36 2.52a8.06 8.06 0 0 0-1.62.94l-2.4-.96a.5.5 0 0 0-.585.22L1.7 8.844a.5.5 0 0 0 .12.64l2.036 1.58a7.952 7.952 0 0 0 0 1.872L1.82 14.516a.5.5 0 0 0-.12.64l1.928 3.34a.5.5 0 0 0 .585.22l2.4-.96c.5.38 1.04.7 1.62.94l.36 2.52A.5.5 0 0 0 10 23h4a.5.5 0 0 0 .497-.424l.36-2.52c.58-.24 1.12-.56 1.62-.94l2.4.96a.5.5 0 0 0 .585-.22l1.928-3.34a.5.5 0 0 0-.12-.64l-2.036-1.58zM12 15.5A3.5 3.5 0 1 1 12 8.5a3.5 3.5 0 0 1 0 7z"/></svg>
+            <span className="nav-label">Settings</span>
+          </button>
         </nav>
         <div className="header-right">
           <p>Backend: <a href={`${API_URL}/swagger`} target="_blank">Swagger UI</a></p>
@@ -92,16 +107,25 @@ export default function App() {
 
       <div className="topbar">
         <input placeholder="Search products" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} />
-        <button onClick={() => { setQuery(searchTerm); load(searchTerm) }}>Search</button>
-        <button onClick={() => { setSearchTerm(''); setQuery(''); load('') }}>Clear</button>
-        <button onClick={() => load()}>Refresh</button>
+        <button className="btn btn-primary" onClick={() => { setQuery(searchTerm); load(searchTerm) }}>
+          <svg className="icon" viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zM9.5 14A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14z"/></svg>
+          <span>Search</span>
+        </button>
+        <button className="btn" onClick={() => { setSearchTerm(''); setQuery(''); load('') }}>
+          <svg className="icon" viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M6 6l12 12M6 18L18 6"/></svg>
+          <span>Clear</span>
+        </button>
+        <button className="btn" onClick={() => load()}>
+          <svg className="icon" viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M17.65 6.35A8 8 0 1 0 20 12h-2a6 6 0 1 1-1.95-4.24L13 10h7V3l-2.35 3.35z"/></svg>
+          <span>Refresh</span>
+        </button>
       </div>
 
       {tab === 'dashboard' && (
-        <div className="page"><Dashboard /></div>
+        <div className={`page ${'enter'}`} key={`page-${animKey}`}><Dashboard /></div>
       )}
       {tab === 'products' && (
-        <div className="layout">
+        <div className={`layout ${'enter'}`} key={`layout-${animKey}`}>
           <div className="left">
             <h2>Create Product</h2>
             <ProductForm onSubmit={handleCreate} />
