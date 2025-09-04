@@ -154,6 +154,7 @@ export default function App() {
           <svg className="icon" viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M17.65 6.35A8 8 0 1 0 20 12h-2a6 6 0 1 1-1.95-4.24L13 10h7V3l-2.35 3.35z"/></svg>
           <span>Refresh</span>
         </button>
+        {loading && <span className="spinner" aria-hidden="true" />}
       </div>
 
       {tab === 'dashboard' && (

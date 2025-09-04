@@ -128,3 +128,8 @@ a:hover{ color:var(--accent-2); text-decoration:underline }
 
 /* Action buttons inside table get compact radius */
 .products td .btn{ padding:6px 8px; border-radius:8px }
+
+/* Small spinner used in topbar / search */
+@keyframes spin { to { transform: rotate(360deg) } }
+.spinner{ width:16px; height:16px; display:inline-block; margin-left:8px; border-radius:50%; border:2px solid rgba(14,22,40,0.08); border-top-color:var(--accent); box-sizing:border-box; animation:spin 720ms linear infinite }
+[data-theme="dark"] .spinner{ border:2px solid rgba(255,255,255,0.06); border-top-color:var(--accent) }
