@@ -16,6 +16,7 @@ export default function App() {
   const [query, setQuery] = useState('')
   const [searchTerm, setSearchTerm] = useState('')
   const [error, setError] = useState(null)
+  const [tab, setTab] = useState('products')
 
   async function load(q) {
     setLoading(true)
