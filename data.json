@@ -4,31 +4,31 @@
       "id": 1,
       "name": "Red Mug",
       "description": "Ceramic red coffee mug",
-      "price": 100
+      "price": 140
     },
     {
       "id": 2,
       "name": "Blue T-Shirt",
       "description": "100% cotton, size M",
-      "price": 12.5
+      "price": 140
     },
     {
       "id": 3,
       "name": "Notebook",
       "description": "A5 lined notebook",
-      "price": 4.25
+      "price": 140
     },
     {
       "id": 4,
       "name": "White Audi",
       "description": "2016 Audi A7 3.0T",
-      "price": 50000
+      "price": 50015
     },
     {
       "id": 5,
       "name": "White Pick up Truck",
       "description": "2011 F-150 Hennessey 6.2L ",
-      "price": 90000
+      "price": 90015
     },
     {
       "id": 20,
@@ -52,14 +52,27 @@
       "id": 25,
       "name": "Test",
       "description": "New product line",
-      "price": 150
+      "price": 165
     },
     {
       "id": 26,
       "name": "Blue item",
       "description": "Blue shirt",
-      "price": 100
+      "price": 115
     }
   ],
-  "nextId": 27
+  "nextId": 27,
+  "users": [
+    {
+      "id": 1,
+      "username": "admin",
+      "passwordHash": "4813494d137e1631bba301d5acab6e7bb7aa74ce1185d456565ef51d737677b2"
+    },
+    {
+      "id": 2,
+      "username": "bulkuser",
+      "passwordHash": "ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f"
+    }
+  ],
+  "nextUserId": 3
 }

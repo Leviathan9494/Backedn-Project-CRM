@@ -5,7 +5,7 @@ export default function Signup({ onSuccess, onCancel }) {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState(null)
-  const [loading, setLoading] = useState(false)
+  const [_loading, setLoading] = useState(false)
 
   async function submit(e) {
     e.preventDefault()

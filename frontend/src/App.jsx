@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { getProducts, createProduct, updateProduct, deleteProduct } from './api'
+import { getProducts, createProduct, updateProduct, deleteProduct, batchDelete, batchUpdate } from './api'
+import BulkEdit from './components/BulkEdit'
 import ProductForm from './components/ProductForm'
 import ProductList from './components/ProductList'
 import Dashboard from './components/Dashboard'
@@ -15,6 +16,8 @@ export default function App() {
   const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(false)
   const [editing, setEditing] = useState(null)
+  const [selectedIds, setSelectedIds] = useState([])
+  const [showBulkEdit, setShowBulkEdit] = useState(false)
   const [query, setQuery] = useState('')
   const [searchTerm, setSearchTerm] = useState('')
   const [error, setError] = useState(null)
@@ -128,7 +131,7 @@ export default function App() {
             <svg className="nav-icon" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M3 13h8V3H3v10zm0 8h8v-6H3v6zM13 21h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
             <span className="nav-label">Dashboard</span>
           </button>
-          <button type="button" className={tab === 'products' ? 'active' : ''} onClick={() => setTab('products')} title="Products">
+          <button type="button" className={tab === 'products' ? 'active' : ''} onClick={() => { if (!user) { setShowLogin(true); return } setTab('products') }} title="Products">
             <svg className="nav-icon" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M12 2L2 7l10 5 10-5-10-5zm0 7.3L4.2 7 12 4.7 19.8 7 12 9.3zM2 17l10 5 10-5V9l-10 5L2 9v8z"/></svg>
             <span className="nav-label">Products</span>
           </button>
@@ -183,21 +186,47 @@ export default function App() {
       )}
       {tab === 'products' && (
         <div className={`layout ${'enter'}`} key={`layout-${animKey}`}>
-          <div className="left">
-            <h2>Create Product</h2>
-            <ProductForm onSubmit={handleCreate} />
-          </div>
-          <div className="right">
-            <h2>Products</h2>
-            {error && <div className="error">Error: {error}</div>}
-            {loading ? <p>Loading...</p> : (
-              products && products.length > 0 ? (
-                <ProductList products={products} onEdit={setEditing} onDelete={handleDelete} />
-              ) : (
-                <div className="empty">No products found. Try creating one or refresh.</div>
-              )
-            )}
-          </div>
+          {user ? (
+            <>
+              <div className="left">
+                <h2>Create Product</h2>
+                <ProductForm onSubmit={handleCreate} />
+              </div>
+              <div className="right">
+                <h2>Products</h2>
+                {error && <div className="error">Error: {error}</div>}
+                {loading ? <p>Loading...</p> : (
+                  products && products.length > 0 ? (
+                    <>
+                      <div style={{ display: 'flex', gap: 8, marginBottom: 8 }}>
+                        <button type="button" className="btn" disabled={selectedIds.length === 0} onClick={() => setShowBulkEdit(true)}>Edit selected ({selectedIds.length})</button>
+                        <button type="button" className="btn btn-delete" disabled={selectedIds.length === 0} onClick={async () => {
+                          if (!confirm(`Delete ${selectedIds.length} selected product(s)?`)) return
+                          try {
+                            await batchDelete(selectedIds)
+                            setSelectedIds([])
+                            await load()
+                          } catch (err) { setError(err.message || String(err)) }
+                        }}>Delete selected ({selectedIds.length})</button>
+                      </div>
+                      <ProductList products={products} onEdit={setEditing} onDelete={handleDelete} onSelectionChange={(ids) => setSelectedIds(ids)} />
+                    </>
+                  ) : (
+                    <div className="empty">No products found. Try creating one or refresh.</div>
+                  )
+                )}
+              </div>
+            </>
+          ) : (
+            <div className="auth-gate">
+              <h3>Login required</h3>
+              <p>You must be logged in to view or modify products.</p>
+              <div style={{ display: 'flex', gap: 8 }}>
+                <button type="button" className="btn btn-primary" onClick={() => setShowLogin(true)}>Login</button>
+                <button type="button" className="btn" onClick={() => setShowSignup(true)}>Sign up</button>
+              </div>
+            </div>
+          )}
         </div>
       )}
       {tab === 'settings' && (
@@ -213,11 +242,26 @@ export default function App() {
         </div>
       )}
 
+      {showBulkEdit && (
+        <div className="modal">
+          <div className="modal-inner">
+            <BulkEdit selectedIds={selectedIds} onCancel={() => setShowBulkEdit(false)} onSubmit={async (ids, update) => {
+              try {
+                await batchUpdate(ids, update)
+                setShowBulkEdit(false)
+                setSelectedIds([])
+                await load()
+              } catch (err) { setError(err.message || String(err)) }
+            }} />
+          </div>
+        </div>
+      )}
+
       {/* Login / Signup modals */}
       {showLogin && (
         <div className="modal">
           <div className="modal-inner">
-            <Login onSuccess={(body) => { try { localStorage.setItem('username', body.username) } catch (_e) {} setUser({ username: body.username }); setShowLogin(false) }} onCancel={() => setShowLogin(false)} />
+            <Login onSuccess={(body) => { try { localStorage.setItem('username', body.username) } catch (_e) { /* ignore storage error */ } setUser({ username: body.username }); setShowLogin(false) }} onCancel={() => setShowLogin(false)} />
           </div>
         </div>
       )}

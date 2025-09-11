@@ -70,3 +70,18 @@ export async function deleteProduct(id) {
   const res = await fetch(`${API}/products/${id}`, { method: 'DELETE', headers: { ...authHeaders() } })
   return res.status === 204
 }
+
+export async function batchDelete(ids = []) {
+  const res = await fetch(`${API}/products/batch`, { method: 'DELETE', headers: { 'content-type': 'application/json', ...authHeaders() }, body: JSON.stringify({ ids }) })
+  if (!res.ok) throw new Error('Failed to delete batch')
+  return res.json()
+}
+
+export async function batchUpdate(ids = [], update = {}) {
+  const res = await fetch(`${API}/products/batch`, { method: 'PATCH', headers: { 'content-type': 'application/json', ...authHeaders() }, body: JSON.stringify({ ids, update }) })
+  if (!res.ok) {
+    const body = await res.json().catch(() => null)
+    throw new Error(body?.error || 'Failed to update batch')
+  }
+  return res.json()
+}

@@ -14,7 +14,7 @@ export default function Dashboard() {
           const max = items.reduce((a, b) => (a.price > b.price ? a : b), items[0])
           setExpensive(max)
         }
-      } catch (e) {
+      } catch (_e) {
         setCount(0)
       }
     })()

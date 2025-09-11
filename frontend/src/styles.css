@@ -97,6 +97,11 @@ a:hover{ color:var(--accent-2); text-decoration:underline }
 .products thead th{ color:var(--text-strong); font-weight:700 }
 .products tbody td .muted{ color:var(--muted); font-size:13px }
 
+/* Sortable headers */
+.products thead th[role="button"]{ cursor:pointer; user-select:none }
+.products thead th.sorted.asc{ background: linear-gradient(90deg, rgba(75,107,255,0.06), rgba(138,75,255,0.04)); }
+.products thead th.sorted.desc{ background: linear-gradient(90deg, rgba(138,75,255,0.06), rgba(75,107,255,0.04)); }
+
 /* Small helpers for buttons that use the accent */
 .btn-primary{ background:linear-gradient(90deg,var(--accent),var(--accent-2)); color:var(--accent-contrast); box-shadow:0 10px 30px rgba(75,107,255,0.12) }
 .btn-primary:hover{ box-shadow:0 18px 40px rgba(75,107,255,0.16) }
@@ -133,3 +138,9 @@ a:hover{ color:var(--accent-2); text-decoration:underline }
 @keyframes spin { to { transform: rotate(360deg) } }
 .spinner{ width:16px; height:16px; display:inline-block; margin-left:8px; border-radius:50%; border:2px solid rgba(14,22,40,0.08); border-top-color:var(--accent); box-sizing:border-box; animation:spin 720ms linear infinite }
 [data-theme="dark"] .spinner{ border:2px solid rgba(255,255,255,0.06); border-top-color:var(--accent) }
+
+/* Checkbox column alignment */
+.products thead th input[type="checkbox"], .products tbody td input[type="checkbox"]{ width:16px; height:16px; margin:0; display:block }
+.products thead th[role="button"]{ padding-left:8px }
+.products td:first-child{ width:36px; text-align:center }
+
